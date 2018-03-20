@@ -63,9 +63,10 @@ def draw_gene(header, seq, motifs, counter):
     ctx.set_source_rgb(0, 0, 0)
 
     # Add gene name
-    ctx.select_font_face("Serif", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+    ctx.select_font_face("Times New Roman", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
     ctx.set_font_size(0.02)
-    #ctx.FontOptions.set_width(0.01)
+    #ctx.get_font_options()
+    ctx.set_font_options(cairo.FontOptions(width=0.1))
     ctx.move_to(0.025, 0.05)
     ctx.show_text(header)
     
@@ -90,7 +91,7 @@ def draw_gene(header, seq, motifs, counter):
         # Set color for motif and add label. Add small value to location
         ctx.set_source_rgb(random.uniform(0, 1), random.uniform(0, 1),
                         random.uniform(0, 1))
-        ctx.select_font_face("Serif")
+        ctx.select_font_face("Times New Roman")
         ctx.set_font_size(0.025)
         ctx.move_to(0.025, labelloc)
         ctx.show_text(motif)
