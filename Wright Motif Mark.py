@@ -52,11 +52,11 @@ def draw_gene(header, seq, motifs, counter):
     surface = cairo.SVGSurface(str(counter)+".svg", WIDTH, HEIGHT)
     ctx = cairo.Context(surface)
 
-    ctx.scale(WIDTH, HEIGHT)
+    #ctx.scale(WIDTH, HEIGHT)
 
     # Paint white background
     ctx.set_source_rgb(1, 1, 1)
-    ctx.rectangle(0, 0, 1, 1)
+    ctx.rectangle(0, 0, WIDTH, HEIGHT)
     ctx.fill()
 
     # Set color back to black
@@ -64,51 +64,44 @@ def draw_gene(header, seq, motifs, counter):
 
     # Add gene name
     ctx.select_font_face("Times New Roman", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-    ctx.set_font_size(0.02)
-    #ctx.get_font_options()
-    ctx.set_font_options(cairo.FontOptions(width=0.1))
-    ctx.move_to(0.025, 0.05)
+    ctx.set_font_size(20)
+    ctx.move_to(0.025*WIDTH, 0.05*HEIGHT)
     ctx.show_text(header)
     
     # Set intron line width and draw introns
-    ctx.set_line_width(0.02)
+    ctx.set_line_width(0.02*HEIGHT)
     for loc in introns:
-        ctx.move_to(loc[0]/seqlength, 0.5)
-        ctx.line_to(loc[1]/seqlength, 0.5)
+        ctx.move_to(loc[0], 0.5*HEIGHT)
+        ctx.line_to(loc[1], 0.5*HEIGHT)
         ctx.stroke()
 
     # Same for exons
-    ctx.set_line_width(0.075)
+    ctx.set_line_width(0.075*HEIGHT)
     for loc in exons:
-        ctx.move_to(loc[0]/seqlength, 0.5)
-        ctx.line_to(loc[1]/seqlength, 0.5)
+        ctx.move_to(loc[0], 0.5*HEIGHT)
+        ctx.line_to(loc[1], 0.5*HEIGHT)
         ctx.stroke()
 
     # Make location variable for motif label
-    labelloc = 0.1
+    labelloc = 0.1*400
     # Iterate through motif dictionary
     for motif in matches:
         # Set color for motif and add label. Add small value to location
         ctx.set_source_rgb(random.uniform(0, 1), random.uniform(0, 1),
                         random.uniform(0, 1))
         ctx.select_font_face("Times New Roman")
-        ctx.set_font_size(0.025)
-        ctx.move_to(0.025, labelloc)
+        ctx.set_font_size(20)
+        ctx.move_to(0.025*seqlength, labelloc)
         ctx.show_text(motif)
-        labelloc=labelloc+0.035
+        labelloc=labelloc+20
 
         # Draw motifs
         for loc in matches[motif]:
-            ctx.move_to(loc[0]/seqlength, 0.5)
-            ctx.line_to(loc[1]/seqlength, 0.5)
+            ctx.move_to(loc[0], 0.5*HEIGHT)
+            ctx.line_to(loc[1], 0.5*HEIGHT)
             ctx.stroke()
 
-    #surface.write_to_svg("example.svg")
     surface.finish()
-    # Initialize surface (300x600?) and scale
-    # Draw lines for individ boundaries
-    # overlay boxes for motifs on top
-    # add labels and colors for motifs
     counter=counter+1
     return counter
 
